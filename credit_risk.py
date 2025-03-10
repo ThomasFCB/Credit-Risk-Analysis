@@ -42,10 +42,23 @@ print("Acurácia do modelo:", accuracy)
 print("Relatório de Classificação:")
 print(classification_report(y_test, y_pred))
 
-# Matriz de confusão
+# Confusion matrix
 plt.figure(figsize=(6,4))
 sns.heatmap(confusion_matrix(y_test, y_pred), annot=True, fmt="d", cmap="Blues")
 plt.xlabel("Previsto")
 plt.ylabel("Real")
 plt.title("Matriz de Confusão")
+
+#visualize important features
+importances = model.feature_importances_
+print(importances)
+feature_names = X.columns
+indices = np.argsort(importances)[::-1]
+
+plt.figure(figsize=(10, 6))
+sns.barplot(x=importances[indices], y=[feature_names[i] for i in indices])
+plt.xlabel("Importância")
+plt.ylabel("Características")
+plt.title("Importância das Características")
+
 plt.show()
