@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
+from sklearn.metrics import accuracy_score, classification_report, confusion_matrix, roc_curve, auc
 
 file_path = "german_credit_data.csv"
 df = pd.read_csv(file_path)
@@ -49,7 +49,7 @@ plt.xlabel("Previsto")
 plt.ylabel("Real")
 plt.title("Matriz de Confusão")
 
-#visualize important features
+#Visualize important features
 importances = model.feature_importances_
 print(importances)
 feature_names = X.columns
@@ -60,5 +60,18 @@ sns.barplot(x=importances[indices], y=[feature_names[i] for i in indices])
 plt.xlabel("Importância")
 plt.ylabel("Características")
 plt.title("Importância das Características")
+
+#Analyse performace via the roc curve
+y_probs = model.predict_proba(X_test)[:, 1]
+fpr, tpr, _ = roc_curve(y_test, y_probs)
+roc_auc = auc(fpr, tpr)
+
+plt.figure(figsize=(8, 6))
+plt.plot(fpr, tpr, label=f'ROC curve (area = {roc_auc:.2f})')
+plt.plot([0, 1], [0, 1], 'r--')
+plt.xlabel("Falso Positivo")
+plt.ylabel("Verdadeiro Positivo")
+plt.title("Curva ROC")
+plt.legend()
 
 plt.show()
