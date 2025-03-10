@@ -4,6 +4,8 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 # Load public data
 df = pd.read_csv('german_credit_data.csv')
+sns.countplot(x=df["Risk"])
+plt.title("Distribuição da variável alvo")
 
 # Identify categorical columns
 categorical_columns = ["Sex", "Housing", "Saving accounts", "Checking account", "Purpose", "Risk"]
@@ -20,10 +22,13 @@ print(df.columns)
 print(df.head())
 print(df_encoded.head())
 
+#Histogram for some important variables
+df[['Age','Job','Credit amount','Duration']].hist(figsize=(12, 10), bins=20)
+
 # Define colors for risk categories
 colors = {"good": "blue", "bad": "red"}
 
-# Create plot
+# Create scatter plot
 plt.figure(figsize=(8, 6))
 sns.scatterplot(data=df, x="Age", y="Credit amount", hue="Risk", palette=colors, alpha=0.7)
 
